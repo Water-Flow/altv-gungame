@@ -1,0 +1,50 @@
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+body
+{
+	background-color: transparent;
+	font-family: 'Indie Flower', cursive;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.playerInfo
+{
+	position: fixed;
+	width: 800px;
+	height: 80px;
+	bottom:-20px;
+    right:25%;
+    left:50%;
+	margin-left:-400px;
+	
+	background: #ffffffaa;
+	background: -moz-linear-gradient(top,  #ffffffaa 0%, #f1f1f1aa 50%, #e1e1e1aa 51%, #f6f6f6aa 100%);
+	background: -webkit-linear-gradient(top,  #ffffffaa 0%,#f1f1f1aa 50%,#e1e1e1aa 51%,#f6f6f6aa 100%);
+	background: linear-gradient(to bottom,  #ffffffaa 0%,#f1f1f1aa 50%,#e1e1e1aa 51%,#f6f6f6aa 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffffaa', endColorstr='#f6f6f6aa',GradientType=0 );
+
+
+	background-origin: border-box;
+	background-clip: content-box, border-box;
+
+	border: double 4px transparent;
+	border-radius: 20px;
+}
+
+.playerInfo::after
+{
+	clear: both;
+}
+
+.box
+{
+	float: left;
+	width: 220px;
+	padding: 13px 0px 10px 15px;
+	text-align: center;
+}

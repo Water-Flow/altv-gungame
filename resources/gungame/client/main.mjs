@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import alt from 'alt';
 import game from 'natives';
 

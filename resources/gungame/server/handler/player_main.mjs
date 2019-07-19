@@ -14,18 +14,40 @@ export class Player
 			if(player.data === undefined)
 				player.data = JSON.parse(fs.readFileSync('./resources/gungame/server/config/player.json', 'utf8'));
 			alt.emit('spawnPlayer', player);
+			alt.emitClient(player, 'playerReady');
 		});
 
 		alt.on('playerDeath', (player, killer, weapon) =>
 		{
-			killer.data.stage += 1;
-			if(killer.data.stage === matchData.Weapons.length - 1)
+			if(player !== killer)
 			{
-				killer.data.level += 1;
-				killer.data.stage = 0;
+				killer.data.stage++;
+				killer.data.points++;
+				if(killer.data.stage === matchData.Weapons.length - 1)
+				{
+					killer.data.level++;
+					killer.data.stage = 0;
+				}
+				alt.emitClient(killer, 'updatePoints', killer.data);
+				alt.emitClient(killer, 'removeAllPedWeapons');
+				alt.emit('giveWeaponToPlayer', killer);
 			}
-			alt.emitClient(killer, 'removeAllPedWeapons');
-			alt.emit('giveWeaponToPlayer', killer);
+			else
+			{
+				player.data.stage--;
+				player.data.points--;
+				if(player.data.stage < 0)
+				{
+					player.data.stage = matchData.Weapons.length - 1;
+					player.data.level--;
+				}
+				if(player.data.level < 0)
+				{
+					player.data.level = 0;
+					player.data.stage = 0;
+				}
+				alt.emitClient(player, 'updatePoints', player.data);
+			}
 			setTimeout(() =>
 			{
 				alt.emitClient(player, 'removeAllPedWeapons');

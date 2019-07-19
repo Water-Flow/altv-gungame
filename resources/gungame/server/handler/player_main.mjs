@@ -11,16 +11,19 @@ export class Player
 
 		alt.on('playerConnect', (player) =>
 		{
-			if(player.level === undefined)
-				player.level = 0;
+			if(player.data === undefined)
+				player.data = JSON.parse(fs.readFileSync('./resources/gungame/server/config/player.json', 'utf8'));
 			alt.emit('spawnPlayer', player);
 		});
 
 		alt.on('playerDeath', (player, killer, weapon) =>
 		{
-			killer.level += 1;
-			if(killer.level === matchData.Weapons.length - 1)
-				killer.level = 0;
+			killer.data.stage += 1;
+			if(killer.data.stage === matchData.Weapons.length - 1)
+			{
+				killer.data.level += 1;
+				killer.data.stage = 0;
+			}
 			alt.emitClient(killer, 'removeAllPedWeapons');
 			alt.emit('giveWeaponToPlayer', killer);
 			setTimeout(() =>
@@ -40,7 +43,7 @@ export class Player
 
 		alt.on('giveWeaponToPlayer', (player) =>
 		{
-			player.giveWeapon(matchData.Weapons[player.level].id, matchData.Weapons[player.level].ammo, true);
+			player.giveWeapon(matchData.Weapons[player.data.stage].id, matchData.Weapons[player.data.stage].ammo, true);
 		});
 	}
 }
